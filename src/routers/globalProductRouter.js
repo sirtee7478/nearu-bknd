@@ -17,7 +17,7 @@ globalProductRouter.post(
 
 globalProductRouter.get("/global-products/:slug", getProductsBySlug);
 
-globalProductRouter.post("/global-products/selected", getSelectedProductSellers)
+globalProductRouter.get("/global-products/store/:slug", getSelectedProductSellers)
 
 // globalProductRouter.get("/global-product", globalProduct);
 
