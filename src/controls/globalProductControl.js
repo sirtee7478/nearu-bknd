@@ -1,4 +1,4 @@
-const GlobalProduct = require("../models/globalProductModel");
+const GlobalProducts = require("../models/globalProductModel");
 const Products = require("../models/productModel");
 const slugify = require("slugify");
 const Category = require("../models/category");
@@ -68,7 +68,7 @@ exports.getProductsBySlug = (request, response) => {
       if (error) return response.status(400).json({ error });
 
       if (category)
-        return GlobalProduct.find({ category: category._id }).exec(
+        return GlobalProducts.find({ category: category._id }).exec(
           (error, globalProducts) => {
             if (error) return response.status(400).json({ error });
 
@@ -82,9 +82,15 @@ exports.getProductsBySlug = (request, response) => {
 };
 
 exports.getSelectedProductSellers = async (request, response) => {
-  const { _id } = request.body;
+  const { slug } = request.params;
 
-  Products.find({})
+  const productInfo = await GlobalProducts.findOne({ productSlug: slug })
+    .select(
+      "_id productName createdBy productSlug fullDescription shortDescription productInstruction globalItem category location globalProductImage brand reviews ratings tags recommendedWith frequentlyPurchasedWith promos"
+    )
+    .exec();
+
+  Products.find({ globalId: productInfo._id })
     .select(
       "sellerId productName productSlug globalId fullDescription shortDescription productInstruction productImage sellingPrice oldPrice regularPrice brandImage currency subscription postOrder returnable offer promo freeDelivery delivery preOrder negotiable category availableQuantity globalStore tags brand sellerInfo updatedAt minOrder maxOrder recommendedWith frequentlyPurchasedWith giftWithPurchase jointVenture"
     )
@@ -92,11 +98,10 @@ exports.getSelectedProductSellers = async (request, response) => {
       { path: "sellerId", select: "firstName surname username image seller" },
       { path: "category", select: "_id name children" },
     ])
-    .exec((error, items) => {
+    .exec((error, sellers) => {
       if (error) return response.status(400).json({ error });
-      if (items) {
-        const products = items.filter((item) => item.globalId == _id);
-        response.status(200).json({ products });
+      if (sellers) {
+        response.status(200).json({ sellers, productInfo });
       }
     });
 };
