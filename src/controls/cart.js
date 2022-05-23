@@ -10,7 +10,7 @@ exports.addToCart = expressAsyncHandler(async (request, response) => {
 
       const product = request.body.cartItems.product;
       //this will find one out of all the cart items
-      const item = cart.cartItems.find((c) => c.product == product);
+      const item = Cart.cartItems.find((c) => c.product == product);
 
       let condition, action; 
 

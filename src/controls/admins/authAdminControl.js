@@ -57,7 +57,6 @@ exports.signin = (request, response) => {
     if (error) return response.status(400).json({ error });
     if (user) { 
       if (user.authenticate(request.body.password) && user.role === "admin") {
-        //i am returning a unique web token for the user so that the token will be sent to the server for every request the user is goiing to be making to the server. In other words this web token will help the server recorgnise the user.
         const token = jwt.sign(
           {
             //this has 3 parameters, first is the object to be stored in the token, second is to encript the data and should be kept in a secret environment like .env

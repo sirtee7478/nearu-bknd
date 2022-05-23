@@ -91,7 +91,7 @@ exports.upload = multer({ storage });
 
 //Middle for only admin and user to be able to add categories
 exports.userAuthRequired = (request, response, next) => {
-  if (request.user.role !== "user")
+  if (request.user.role !== "user") 
     return response.status(400).json({ Message: "access denied" });
   next();
 };  

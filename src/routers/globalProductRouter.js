@@ -20,5 +20,5 @@ globalProductRouter.get("/global-products/:slug", getProductsBySlug);
 globalProductRouter.get("/global-products/store/:slug", getSelectedProductSellers)
 
 // globalProductRouter.get("/global-product", globalProduct);
-
+ 
 module.exports = globalProductRouter;

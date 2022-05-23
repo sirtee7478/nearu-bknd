@@ -23,15 +23,14 @@ exports.createPage = (request, response) => {
     .exec((error, page) => {
         if(error) return response.status(400).json({error});
         if(page) {
-            Page.findOneAndUpdate({ category: request.body.category}, requet.body)
+            Page.findOneAndUpdate({ category: request.body.category}, request.body)
             .exec((error, updatedPage) => {
                 if(error) return response.status(400).json({error});
-                if(updatedPage) return response.status(201).json({page: updatePage})
-            })
+                if(updatedPage) return response.status(201).json({page: updatedPage})
+            }) 
 
         } else {
-            const page = new Page(request.body);
-    page.save((error, page) => {
+        new Page(request.body).save((error, page) => {
         if(error) return response.status(400).json({error});
         if(page) return response.status(201).json({page});
     })
